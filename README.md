@@ -22,6 +22,13 @@ the note says Qualified/Disqualified), dropdown-value matching. Score, Priority 
 Excel formulas (recalculated when the file is opened in Excel; the app shows the same values).
 A timestamped backup goes in `backups/` before every write. Close the workbook in Excel before writing.
 
+## Deleting leads and extra rows
+- Deleting a lead (View tab) moves the later leads of that niche up, so there are no gaps: delete SAL-01 and SAL-02
+  becomes SAL-01, SAL-03 becomes SAL-02, and so on. Lead IDs stay with their positions.
+- Each niche has 10 slots. When all are full, the next lead is added as an extra row (SAL-11, SAL-12, ...), and the
+  Dashboard and dropdowns cover it. Extra rows are reused after deletes. Names are matched on their distinctive words
+  ("Glow Studio" finds "Glow Studio Unisex Salon", but "Kavya Salon" is not "Jaya Salon").
+
 ## Login
 The app shows a username and password page first. Users live only in Streamlit Secrets (never in the repo):
 ```toml
