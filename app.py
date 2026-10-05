@@ -253,3 +253,5 @@ with tab_dash:
     m[2].metric("Hot leads", total["Hot"])
     m[3].metric("Qualified", total["Qualified"])
     st.dataframe(dash, hide_index=True, width="stretch")
+
+auth.apply_cookie_changes()  # writes the "stay signed in" cookie after a login (no-op otherwise)
