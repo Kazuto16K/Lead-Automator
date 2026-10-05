@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<body>
+<script>
+// Tiny Streamlit component: reads one cookie in the browser and sends its value to Python.
+// Needed because Streamlit Cloud's proxy does not reliably pass cookies to the server.
+var sent = false;
+function post(type, data) {
+  window.parent.postMessage(Object.assign({isStreamlitMessage: true, type: type}, data), "*");
+}
+function readCookie(name) {
+  var hit = document.cookie.split("; ").find(function (c) { return c.indexOf(name + "=") === 0; });
+  return hit ? hit.slice(name.length + 1) : "";
+}
+window.addEventListener("message", function (e) {
+  if (e.data && e.data.type === "streamlit:render" && !sent) {
+    sent = true;  // once only: sending again on every re-render would cause a rerun loop
+    post("streamlit:setFrameHeight", {height: 0});
+    post("streamlit:setComponentValue", {value: readCookie(e.data.args.name), dataType: "json"});
+  }
+});
+post("streamlit:componentReady", {apiVersion: 1});
+</script>
+</body>
+</html>
