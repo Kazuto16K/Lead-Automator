@@ -5,6 +5,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
+import auth
 import excel_io as xl
 import github_sync as gh
 from llm_parser import DEFAULT_MODEL, normalize_lead, parse_with_gemini
@@ -15,6 +16,8 @@ st.set_page_config(page_title="Lead Automator", layout="wide", initial_sidebar_s
 # Neon look & feel (base colours also set in .streamlit/config.toml)
 st.markdown(f"<style>{(Path(__file__).parent / 'neon.css').read_text(encoding='utf-8')}</style>",
             unsafe_allow_html=True)
+
+user = auth.require_login()  # nothing below runs (no data, no GitHub sync) until someone signs in
 
 
 def _get_key():
@@ -68,7 +71,11 @@ except PermissionError:
     st.stop()
 
 st.title("Lead Automator")
-st.caption("Type what you found in plain English. We turn it into structured data and fill the Excel tracker.")
+who, out = st.columns([4, 1])
+who.caption(f"Signed in as **{user}**. Type what you found in plain English and we fill the Excel tracker.")
+if out.button("Sign out"):
+    auth.sign_out()
+    st.rerun()
 
 banner = st.container()  # fixed slot above the tabs, so a new message does not reset the selected tab
 with banner:
@@ -85,7 +92,8 @@ tab_add, tab_view, tab_dash = st.tabs(["Add", "View", "Stats"])
 
 # ------------------------------------------------------------ add / update
 with tab_add:
-    researched_by = st.text_input("Your name", key="researched_by", placeholder="Saved as 'Researched By' on new leads")
+    st.session_state.setdefault("researched_by", user)  # the signed-in user, still editable
+    researched_by = st.text_input("Your name", key="researched_by", help="Saved as 'Researched By' on new leads")
     niche = st.selectbox("Which niche?", opts["A"])
     st.markdown("**What kind of details are you giving?**")
     picked = st.pills("Select all that apply", list(STEPS.values()), selection_mode="multi",
