@@ -70,6 +70,7 @@ hr { border-color: var(--line) !important; }
   .block-container { padding: 1rem .8rem 4rem; }
   h1 { font-size: 1.7rem !important; }
   .stButton, .stDownloadButton, .stFormSubmitButton { width: 100%; }
+  [data-testid="stElementContainer"]:has([data-testid="stFormSubmitButton"]), [data-testid="stFormSubmitButton"], [data-testid="stFormSubmitButton"] > div, [data-testid="stFormSubmitButton"] button { width: 100% !important; }
   .stButton button, .stDownloadButton button, .stFormSubmitButton button, .stLinkButton a { width: 100%; min-height: 3rem; font-size: 1rem; }
   textarea, input { font-size: 16px !important; }  /* stops iOS zooming into fields */
   .stTabs [data-baseweb="tab-list"] { overflow-x: auto; }

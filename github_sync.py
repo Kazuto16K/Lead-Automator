@@ -43,7 +43,7 @@ def pull(cfg, local_path):
     try:
         r = requests.get(_url(cfg), params={"ref": cfg["branch"]},
                          headers=_headers(cfg, "application/vnd.github.raw+json"), timeout=TIMEOUT)
-        if r.status_code == 404:
+        if r.status_code in (404, 409):  # not there yet (404), or the repo has no commits at all (409)
             return "missing"
         r.raise_for_status()
         Path(local_path).write_bytes(r.content)
@@ -57,7 +57,7 @@ def push(cfg, local_path, message):
     try:
         r = requests.get(_url(cfg), params={"ref": cfg["branch"]}, headers=_headers(cfg), timeout=TIMEOUT)
         sha = r.json().get("sha") if r.status_code == 200 else None
-        if r.status_code not in (200, 404):
+        if r.status_code not in (200, 404, 409):
             r.raise_for_status()
         body = {"message": message, "branch": cfg["branch"],
                 "content": base64.b64encode(Path(local_path).read_bytes()).decode()}

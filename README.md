@@ -22,6 +22,23 @@ the note says Qualified/Disqualified), dropdown-value matching. Score, Priority 
 Excel formulas (recalculated when the file is opened in Excel; the app shows the same values).
 A timestamped backup goes in `backups/` before every write. Close the workbook in Excel before writing.
 
+## Login
+The app shows a username and password page first. Users live only in Streamlit Secrets (never in the repo):
+```toml
+GEMINI_API_KEY = "..."
+GITHUB_TOKEN = "..."
+GITHUB_REPO = "owner/data-repo"
+
+[users]
+manager = "a-password"
+soumava = "another-password"
+```
+Keep the `[users]` table at the BOTTOM of the Secrets box: every line after a `[table]` header belongs to that table.
+Usernames are not case sensitive. With no `[users]` set, nobody can log in (the app fails closed).
+After a correct login the browser keeps a signed "stay signed in" cookie for 30 days (`REMEMBER_DAYS` in `auth.py`), so
+refreshing or reopening the app does not ask again. Sign out deletes it. Changing a user's password in Secrets signs that
+user out everywhere; removing a user locks them out. To add, remove or change a user, edit Secrets and save (the app restarts). For local runs copy `.streamlit/secrets.toml.example` to `.streamlit/secrets.toml`.
+
 ## Deploy on Streamlit Community Cloud
 GitHub Pages cannot run this app (it only serves static files). Use Streamlit Community Cloud (free):
 1. Put the contents of this folder in a GitHub repository (app.py, excel_io.py, llm_parser.py, schema.py,
@@ -54,4 +71,4 @@ If a GitHub upload fails the change is still saved in the app and a warning appe
 Do not edit the Excel inside the data repo by hand while the app is running.
 
 ## Files
-`app.py` UI, `neon.css` theme · `llm_parser.py` Gemini prompt + validation · `excel_io.py` Excel read/write, `github_sync.py` GitHub backup, `github_backup/` nightly workflow · `schema.py` field/column map
+`app.py` UI, `auth.py` login, `neon.css` theme · `llm_parser.py` Gemini prompt + validation · `excel_io.py` Excel read/write, `github_sync.py` GitHub backup, `github_backup/` nightly workflow · `schema.py` field/column map
