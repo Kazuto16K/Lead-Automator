@@ -15,12 +15,15 @@ changing a password in Secrets signs that user out everywhere.
 import hashlib
 import hmac
 import time
+from pathlib import Path
 
 import streamlit as st
 import streamlit.components.v1 as components
 
 REMEMBER_DAYS = 30
 COOKIE = "lead_auth"
+# Reads the cookie inside the browser and hands it to Python (see components/cookie_reader/index.html)
+_cookie_reader = components.declare_component("cookie_reader", path=str(Path(__file__).parent / "components" / "cookie_reader"))
 
 
 def _users():
@@ -106,7 +109,7 @@ def require_login():
     # st.context.cookies is read once when the page opens, so after signing out it still shows the
     # old cookie. The flag stops that stale cookie from signing the user straight back in.
     if not st.session_state.get("signed_out"):
-        name = verify_token(users, _cookie_from_browser())
+        name = verify_token(users, _cookie_from_browser())  # works when the server receives cookies (local runs)
         if name:
             st.session_state["user"] = name
             return name
@@ -126,6 +129,13 @@ def require_login():
             st.rerun()
         time.sleep(1)  # slows down password guessing
         st.error("Wrong username or password.")
+    if not st.session_state.get("signed_out"):
+        # Read the cookie in the browser instead: it reaches us even when the hosting proxy hides cookies from the
+        # server. None = the browser has not answered yet, "" = no cookie. A valid token signs the user in.
+        name = verify_token(users, _cookie_reader(name=COOKIE, key="cookie_reader", default=None))
+        if name:
+            st.session_state["user"] = name
+            st.rerun()
     apply_cookie_changes()  # clears the cookie after a sign out
     st.stop()
 
