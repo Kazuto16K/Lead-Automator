@@ -92,8 +92,7 @@ tab_add, tab_view, tab_dash = st.tabs(["Add", "View", "Stats"])
 
 # ------------------------------------------------------------ add / update
 with tab_add:
-    st.session_state.setdefault("researched_by", user)  # the signed-in user, still editable
-    researched_by = st.text_input("Your name", key="researched_by", help="Saved as 'Researched By' on new leads")
+    researched_by = user  # 'Researched By' in Excel is always the signed-in username (no editable name field)
     niche = st.selectbox("Which niche?", opts["A"])
     st.markdown("**What kind of details are you giving?**")
     picked = st.pills("Select all that apply", list(STEPS.values()), selection_mode="multi",

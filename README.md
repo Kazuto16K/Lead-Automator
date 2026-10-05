@@ -41,7 +41,8 @@ manager = "a-password"
 soumava = "another-password"
 ```
 Keep the `[users]` table at the BOTTOM of the Secrets box: every line after a `[table]` header belongs to that table.
-Usernames are not case sensitive. With no `[users]` set, nobody can log in (the app fails closed).
+Usernames are not case sensitive. The signed-in username (written as in Secrets, e.g. `Soumava = "..."` to get a
+capital S) is saved as 'Researched By' on every new lead; there is no name field to fill in. With no `[users]` set, nobody can log in (the app fails closed).
 After a correct login the browser keeps a signed "stay signed in" cookie for 30 days (read back in the browser by
 `components/cookie_reader`, because hosting proxies may hide cookies from the server) (`REMEMBER_DAYS` in `auth.py`), so
 refreshing or reopening the app does not ask again. Sign out deletes it. Changing a user's password in Secrets signs that
