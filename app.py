@@ -175,8 +175,11 @@ with tab_add:
             if p["action"] == "nomatch":
                 st.error(f"{name}: no existing lead with this name. Choose the lead in the list above, "
                          f"or include Step 1 to add it as a new lead.")
-            elif p["row"] is None:
-                st.error(f"{name}: no free row left in {parsed['niche']}.")
+            elif p["action"] == "noname":
+                st.error("A lead has no business name. Add one in the table above.")
+            elif p["action"] == "extend":
+                st.success(f"**{name}** - new lead **{p['lead_id']}** (all {parsed['niche']} slots are full, "
+                           f"so an extra row is added)")
             elif p["action"] == "new":
                 st.success(f"**{name}** - new lead **{p['lead_id']}**")
             else:
@@ -219,6 +222,7 @@ with tab_view:
         st.dataframe(view.style.map(_color, subset=["Priority"]), hide_index=True,
                      width="stretch", height=min(480, 38 * (len(view) + 1) + 3))
     st.markdown("**Delete a lead**")
+    st.caption("The leads after it in the same niche move up one place, so there are no gaps.")
     with st.container(border=True):  # not an expander: those fold shut on every reload
         started = df_all[df_all["Business Name"].notna()]
         if started.empty:
