@@ -1,0 +1,83 @@
+:root { --bg:#07070f; --bg2:#0b0b17; --surface:#0f1020; --line:#26264a; --text:#e6e9ff; --muted:#7c7fa8;
+        --cyan:#00f0ff; --magenta:#ff2bd6; --purple:#9d4dff; --green:#39ff88; }
+.block-container { padding-top: 2rem; max-width: 1250px; }
+footer, #MainMenu { visibility: hidden; }
+h1 { background: linear-gradient(90deg, var(--cyan), var(--magenta)); -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent; font-weight: 800; letter-spacing: -0.5px;
+     filter: drop-shadow(0 0 14px rgba(0,240,255,.35)); }
+h2, h3 { color: var(--cyan) !important; text-shadow: 0 0 12px rgba(0,240,255,.35); }
+[data-testid="stCaptionContainer"] { color: var(--muted); }
+
+/* smooth neon buttons */
+.stButton button, .stDownloadButton button, .stFormSubmitButton button, .stLinkButton a {
+  border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  transition: transform .15s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease; }
+.stButton button:hover, .stDownloadButton button:hover, .stFormSubmitButton button:hover, .stLinkButton a:hover {
+  transform: translateY(-2px); border-color: var(--cyan); color: #fff;
+  box-shadow: 0 0 16px rgba(0,240,255,.45), inset 0 0 8px rgba(0,240,255,.15); }
+.stButton button:active, .stDownloadButton button:active, .stFormSubmitButton button:active { transform: translateY(0) scale(.98); box-shadow: none; }
+.stButton button[kind="primary"], .stDownloadButton button[kind="primary"], .stFormSubmitButton button[kind="primary"], .stFormSubmitButton button[kind="primaryFormSubmit"] {
+  background: linear-gradient(135deg, var(--cyan), var(--magenta)); border: none; color: #07070f; font-weight: 700;
+  box-shadow: 0 0 14px rgba(0,240,255,.35); }
+.stButton button[kind="primary"]:hover, .stDownloadButton button[kind="primary"]:hover, .stFormSubmitButton button[kind="primary"]:hover, .stFormSubmitButton button[kind="primaryFormSubmit"]:hover {
+  color: #07070f; filter: brightness(1.12); box-shadow: 0 0 24px rgba(255,43,214,.6); }
+.stButton button:disabled { opacity: .35; transform: none; box-shadow: none; }
+
+/* inputs */
+textarea, input, [data-baseweb="select"] > div { border-radius: 12px !important; background: var(--surface) !important;
+  transition: box-shadow .25s ease, border-color .25s ease; }
+textarea:focus, input:focus { box-shadow: 0 0 0 2px rgba(0,240,255,.55), 0 0 14px rgba(0,240,255,.3) !important; }
+
+/* step picker (pills) */
+[data-testid="stPills"] button { border-radius: 999px; padding: .5rem 1.1rem; border: 1px solid var(--line);
+  background: var(--surface); color: var(--text); font-weight: 600; transition: all .2s ease; }
+[data-testid="stPills"] button:hover { border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,240,255,.35); transform: translateY(-1px); }
+[data-testid="stPills"] button[aria-checked="true"], [data-testid="stPills"] button[aria-pressed="true"],
+[data-testid="stPills"] button[kind="pillsActive"] {
+  background: linear-gradient(135deg, rgba(0,240,255,.22), rgba(255,43,214,.22)); border-color: var(--cyan);
+  color: #fff; box-shadow: 0 0 16px rgba(0,240,255,.45); }
+.step-card { display: flex; gap: 14px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line);
+  border-left: 3px solid var(--cyan); border-radius: 14px; padding: 12px 16px; margin: 8px 0;
+  animation: fadein .3s ease; box-shadow: 0 0 18px rgba(0,240,255,.08); }
+.step-card.s2 { border-left-color: var(--magenta); }
+.step-card.s3 { border-left-color: var(--green); }
+.step-num { min-width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: #07070f; background: linear-gradient(135deg, var(--cyan), var(--magenta)); }
+.step-title { font-weight: 700; color: #fff; }
+.step-fields { color: var(--cyan); font-size: .88rem; margin: 2px 0 4px; }
+.step-eg { color: var(--muted); font-size: .85rem; font-style: italic; }
+@keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* tabs */
+.stTabs [data-baseweb="tab-list"] { gap: 6px; border-bottom: 1px solid var(--line); }
+.stTabs [data-baseweb="tab"] { border-radius: 10px 10px 0 0; padding: 10px 18px; transition: background .2s ease, color .2s ease; }
+.stTabs [data-baseweb="tab"]:hover { background: var(--surface); color: var(--cyan); }
+.stTabs [aria-selected="true"] { color: var(--cyan) !important; text-shadow: 0 0 10px rgba(0,240,255,.6); }
+.stTabs [data-baseweb="tab-highlight"] { background: linear-gradient(90deg, var(--cyan), var(--magenta)); height: 3px;
+  box-shadow: 0 0 10px rgba(0,240,255,.7); }
+
+/* cards */
+[data-testid="stMetric"] { background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px 18px; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+[data-testid="stMetric"]:hover { transform: translateY(-2px); border-color: var(--magenta); box-shadow: 0 0 16px rgba(255,43,214,.3); }
+[data-testid="stMetricValue"] { color: var(--cyan); text-shadow: 0 0 12px rgba(0,240,255,.45); }
+[data-testid="stAlert"] { border-radius: 12px; border: 1px solid var(--line); }
+[data-testid="stDataFrame"] { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+hr { border-color: var(--line) !important; }
+
+/* phone */
+@media (max-width: 640px) {
+  .block-container { padding: 1rem .8rem 4rem; }
+  h1 { font-size: 1.7rem !important; }
+  .stButton, .stDownloadButton, .stFormSubmitButton { width: 100%; }
+  .stButton button, .stDownloadButton button, .stFormSubmitButton button, .stLinkButton a { width: 100%; min-height: 3rem; font-size: 1rem; }
+  textarea, input { font-size: 16px !important; }  /* stops iOS zooming into fields */
+  .stTabs [data-baseweb="tab-list"] { overflow-x: auto; }
+  .stTabs [data-baseweb="tab"] { padding: 10px 12px; white-space: nowrap; }
+  [data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) { flex-wrap: wrap; gap: .5rem; }
+  [data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) > [data-testid="stColumn"] {
+    flex: 1 1 calc(50% - .5rem) !important; min-width: calc(50% - .5rem) !important; }
+  [data-testid="stMetric"] { padding: 10px 12px; }
+  [data-testid="stMetricValue"] { font-size: 1.5rem; }
+  .step-card { padding: 10px 12px; }
+}

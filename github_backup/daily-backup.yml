@@ -1,0 +1,27 @@
+# Put this file in the DATA repo (not the app repo) at .github/workflows/daily-backup.yml
+# Every night it saves a dated copy of the tracker: daily/Local_Lead_Tracker_YYYY-MM-DD.xlsx
+name: Daily Excel snapshot
+
+on:
+  schedule:
+    - cron: "0 18 * * *"   # 18:00 UTC = 23:30 India time. GitHub may start it a few minutes late.
+  workflow_dispatch:        # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Save a dated copy and commit it
+        run: |
+          d=$(TZ=Asia/Kolkata date +%F)
+          mkdir -p daily
+          cp Local_Lead_Tracker.xlsx "daily/Local_Lead_Tracker_${d}.xlsx"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add daily
+          git diff --cached --quiet || git commit -m "Daily snapshot ${d}"
+          git push
